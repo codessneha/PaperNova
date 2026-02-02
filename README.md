@@ -1,134 +1,318 @@
-# 
-PaperNova – AI Research Copilot
+# PaperNova Backend API
 
-PaperNova is an AI-powered research assistant designed to help researchers, students, and scientists quickly explore, summarize, and reason across multiple academic papers. It aggregates papers, answers research questions with citations, and visualizes a knowledge graph connecting concepts, methods, and authors.
+Complete REST API for PaperNova AI Research Copilot.
 
-This project is production-ready, using MERN + Python ML microservice architecture with vector search and RAG pipelines, fully open-source and free.
+## Features
 
-Features
+- 🔐 JWT Authentication
+- 📄 Paper management (arXiv & Semantic Scholar integration)
+- 💬 Chat sessions with RAG-based Q&A
+- 🕸️ Knowledge graph generation
+- 🔍 Semantic search with embeddings
+- 📊 Pagination & filtering
+- 🛡️ Input validation & error handling
+- 📝 Comprehensive logging
 
-Multi-paper reasoning with citation-aware answers
+## Tech Stack
 
-Fetch papers from arXiv / Semantic Scholar by title or topic
+- **Runtime:** Node.js v18+
+- **Framework:** Express.js
+- **Database:** MongoDB
+- **Authentication:** JWT
+- **Validation:** express-validator
+- **Logging:** Winston + Morgan
 
-Embedding-based semantic search using FAISS
+## Installation
 
-Interactive knowledge graph connecting papers, methods, and keywords
+### Prerequisites
 
-Persistent chat sessions for multi-turn questioning
+- Node.js v18 or higher
+- MongoDB (local or Atlas)
+- ML Service running on port 8000
 
-Open-source and free, no paid APIs
+### Setup
 
-Unique Selling Points:
-
-Aggregates insights across 10–50 papers dynamically
-
-Generates answers with citations and links
-
-Knowledge graph shows relationships between concepts, methods, and authors
-
-Fully modular architecture for scalability and production readiness
-
-Tech Stack
-Layer	Technology
-Frontend	React + Tailwind CSS + D3.js (Knowledge Graph)
-Backend / API	Node.js + Express
-Database	MongoDB (Atlas free tier / local)
-ML Service	Python + FastAPI
-Embeddings	Sentence-Transformers (all-MiniLM-L6-v2)
-LLM	Mistral / LLaMA (local inference)
-Vector DB	FAISS
-Auth	JWT / Firebase Auth (optional)
-Deployment	Vercel / Netlify (frontend), Render / Railway (backend + ML)
-Architecture Overview
-User
- ↓
-Frontend (React + Tailwind + D3.js)
- ↓
-Backend API (Node.js + Express)
- ↓                  ↘
-MongoDB                Python ML Microservice (FastAPI)
-                        - Paper fetching & parsing
-                        - Embeddings (SentenceTransformers)
-                        - Vector search (FAISS)
-                        - RAG-based answer generation (LLM)
-
-
-Industry Practices Followed:
-
-Microservice separation for ML-heavy tasks
-
-Asynchronous embedding generation for scalable ingestion
-
-Logging & error handling for production monitoring
-
-Dockerized services for reproducibility & deployment
-
-Installation
-Backend
+1. **Clone and navigate:**
+```bash
 cd backend
+```
+
+2. **Install dependencies:**
+```bash
 npm install
+```
+
+3. **Environment setup:**
+```bash
 cp .env.example .env
+```
+
+Edit `.env` with your configuration:
+```env
+PORT=5000
+NODE_ENV=development
+MONGODB_URI=mongodb://localhost:27017/papernova
+JWT_SECRET=your_secret_key_here
+JWT_EXPIRE=7d
+ML_SERVICE_URL=http://localhost:8000
+CORS_ORIGIN=http://localhost:3000
+```
+
+4. **Start MongoDB** (if running locally):
+```bash
+mongod --dbpath=/path/to/data
+```
+
+5. **Run the server:**
+```bash
+# Development mode with auto-reload
 npm run dev
 
-Frontend
-cd frontend
-npm install
+# Production mode
 npm start
+```
 
-ML Service
-cd ml-service
-pip install -r requirements.txt
-uvicorn app:app --reload --port 8000
+Server will start on `http://localhost:5000`
 
-Usage
+## API Documentation
 
-Start ML microservice, backend, and frontend
+### Base URL
+```
+http://localhost:5000/api
+```
 
-Open frontend in browser
+### Authentication
 
-Enter a paper title or research topic
+All protected routes require a Bearer token in the Authorization header:
+```
+Authorization: Bearer <your_jwt_token>
+```
 
-MindMesh fetches related papers and builds embeddings
+### Endpoints
 
-Ask research questions in chat
+#### **Users**
 
-Explore knowledge graph of concepts and papers
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| POST | `/users/register` | Register new user | Public |
+| POST | `/users/login` | Login user | Public |
+| GET | `/users/me` | Get current user | Private |
+| PUT | `/users/me` | Update user profile | Private |
+| PUT | `/users/updatepassword` | Change password | Private |
 
-Answers include citations and links to original papers
+#### **Papers**
 
-File Structure
-mindmesh/
-├── backend/
-│   ├── controllers/        # API logic
-│   ├── routes/             # Express routes
-│   ├── models/             # MongoDB models
-│   ├── utils/              # Utility functions (auth, logging)
-│   └── server.js
-├── frontend/
-│   ├── src/
-│   │   ├── components/     # ChatBox, PaperCard, KnowledgeGraph
-│   │   ├── pages/          # Home, Dashboard, PaperSearch
-│   │   └── utils/          # API calls
-├── ml-service/
-│   ├── app.py              # FastAPI ML microservice
-│   ├── embeddings.py       # Embedding generation
-│   ├── vector_db.py        # FAISS vector store
-│   ├── rag_model.py        # RAG-based answer generation
-│   ├── paper_parser.py     # PDF / abstract parsing
-│   └── utils.py            # Logging, error handling
-├── docs/                   # Architecture, API documentation
-├── docker/                 # Docker configs & docker-compose
-└── README.md
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| GET | `/papers/search` | Search papers from arXiv/Semantic Scholar | Private |
+| POST | `/papers` | Add paper to database | Private |
+| GET | `/papers` | Get all papers (paginated) | Private |
+| GET | `/papers/:id` | Get single paper | Private |
+| PUT | `/papers/:id` | Update paper | Private |
+| DELETE | `/papers/:id` | Delete paper | Private |
+| POST | `/papers/semantic-search` | Semantic search using embeddings | Private |
+| GET | `/papers/arxiv/:arxivId` | Get paper by arXiv ID | Private |
 
-Roadmap / Future Enhancements
+#### **Chat**
 
-Personalization per user (multi-session memory)
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| POST | `/chat/sessions` | Create chat session | Private |
+| GET | `/chat/sessions` | Get all user sessions | Private |
+| GET | `/chat/sessions/:id` | Get single session | Private |
+| PUT | `/chat/sessions/:id` | Update session | Private |
+| DELETE | `/chat/sessions/:id` | Delete session | Private |
+| POST | `/chat/sessions/:id/ask` | Ask question | Private |
+| GET | `/chat/sessions/:id/messages` | Get session messages | Private |
+| POST | `/chat/sessions/:id/papers` | Add papers to session | Private |
 
-Trending / emerging topics notifications
+#### **Knowledge Graph**
 
-Offline PDF ingestion & local indexing
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| POST | `/graph/generate` | Generate knowledge graph | Private |
+| GET | `/graph` | Get user's graphs | Private |
+| GET | `/graph/:id` | Get single graph | Private |
+| PUT | `/graph/:id` | Update graph | Private |
+| DELETE | `/graph/:id` | Delete graph | Private |
 
-Advanced knowledge graph clustering and analytics
+### Example Requests
 
-CI/CD pipeline with GitHub Actions
+#### Register User
+```bash
+curl -X POST http://localhost:5000/api/users/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123"
+  }'
+```
+
+#### Search Papers
+```bash
+curl -X GET "http://localhost:5000/api/papers/search?query=machine%20learning&limit=5" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+#### Ask Question
+```bash
+curl -X POST http://localhost:5000/api/chat/sessions/SESSION_ID/ask \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "What are the main challenges?",
+    "paperIds": ["PAPER_ID_1", "PAPER_ID_2"]
+  }'
+```
+
+## Project Structure
+```
+backend/
+├── config/
+│   ├── db.js                 # MongoDB connection
+│   └── constants.js          # App constants
+├── controllers/
+│   ├── userController.js     # User logic
+│   ├── paperController.js    # Paper logic
+│   ├── chatController.js     # Chat logic
+│   └── graphController.js    # Graph logic
+├── middleware/
+│   ├── authMiddleware.js     # JWT authentication
+│   ├── errorHandler.js       # Error handling
+│   └── logger.js             # HTTP logging
+├── models/
+│   ├── User.js              # User schema
+│   ├── Paper.js             # Paper schema
+│   ├── ChatSession.js       # Chat session schema
+│   ├── Message.js           # Message schema
+│   └── KnowledgeGraph.js    # Knowledge graph schema
+├── routes/
+│   ├── userRoutes.js        # User routes
+│   ├── paperRoutes.js       # Paper routes
+│   ├── chatRoutes.js        # Chat routes
+│   └── graphRoutes.js       # Graph routes
+├── services/
+│   ├── arxivService.js      # arXiv API integration
+│   ├── semanticScholarService.js  # Semantic Scholar API
+│   └── mlService.js         # ML microservice client
+├── utils/
+│   ├── auth.js              # Auth utilities
+│   ├── logger.js            # Winston logger
+│   └── validators.js        # Input validation
+├── logs/                    # Log files
+├── .env                     # Environment variables
+├── .env.example            # Environment template
+├── server.js               # Main server file
+└── package.json            # Dependencies
+```
+
+## Testing
+
+### Run Test Script
+```bash
+node scripts/test-api.js
+```
+
+### Using Postman
+1. Import `postman/PaperNova-API.postman_collection.json`
+2. Set environment variables:
+   - `BASE_URL`: http://localhost:5000
+   - `TOKEN`: (will be set after login)
+
+## Error Handling
+
+All errors return JSON in this format:
+```json
+{
+  "success": false,
+  "error": "Error message here"
+}
+```
+
+Common status codes:
+- `200` - Success
+- `201` - Created
+- `400` - Bad Request
+- `401` - Unauthorized
+- `403` - Forbidden
+- `404` - Not Found
+- `500` - Server Error
+
+## Logging
+
+Logs are stored in:
+- `logs/combined.log` - All logs
+- `logs/error.log` - Error logs only
+
+## Development Tips
+
+### Auto-reload on changes
+```bash
+npm run dev
+```
+
+### Check MongoDB connection
+```bash
+# In MongoDB shell
+use papernova
+db.users.find()
+```
+
+### Clear all data
+```bash
+# In MongoDB shell
+use papernova
+db.dropDatabase()
+```
+
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PORT` | Server port | 5000 |
+| `NODE_ENV` | Environment | development |
+| `MONGODB_URI` | MongoDB connection string | - |
+| `JWT_SECRET` | Secret for JWT signing | - |
+| `JWT_EXPIRE` | Token expiration | 7d |
+| `ML_SERVICE_URL` | ML microservice URL | http://localhost:8000 |
+| `CORS_ORIGIN` | Allowed origin | http://localhost:3000 |
+
+## Next Steps
+
+1. ✅ Backend complete
+2. ⏭️ Build ML Service (Python + FastAPI)
+3. ⏭️ Build Frontend (React)
+4. ⏭️ Deploy
+
+## Troubleshooting
+
+### MongoDB connection error
+```
+Error: connect ECONNREFUSED
+```
+**Solution:** Make sure MongoDB is running
+
+### JWT malformed error
+```
+Error: jwt malformed
+```
+**Solution:** Check Authorization header format: `Bearer <token>`
+
+### Port already in use
+```
+Error: listen EADDRINUSE :::5000
+```
+**Solution:** Kill process on port 5000 or change PORT in .env
+
+## Support
+
+For issues, please check:
+1. MongoDB is running
+2. ML service is running (for chat features)
+3. All environment variables are set
+4. Dependencies are installed (`npm install`)
+
+## License
+
+MIT
