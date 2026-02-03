@@ -1,0 +1,22 @@
+{"level":"info","message":"Server running in development mode on port 5000","service":"papernova-backend","timestamp":"2026-02-03 12:17:43"}
+{"level":"error","message":"Register error: secretOrPrivateKey must have a value","service":"papernova-backend","stack":"Error: secretOrPrivateKey must have a value\n    at module.exports [as sign] (C:\\Users\\Sneha Pandey\\node_modules\\jsonwebtoken\\sign.js:111:20)\n    at generateToken (C:\\Users\\Sneha Pandey\\PaperNova\\PaperNova\\backend\\utils\\auth.js:5:14)\n    at register (C:\\Users\\Sneha Pandey\\PaperNova\\PaperNova\\backend\\controllers\\userController.js:30:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","timestamp":"2026-02-03 12:19:08"}
+{"level":"error","message":"secretOrPrivateKey must have a value","service":"papernova-backend","stack":"Error: secretOrPrivateKey must have a value\n    at module.exports [as sign] (C:\\Users\\Sneha Pandey\\node_modules\\jsonwebtoken\\sign.js:111:20)\n    at generateToken (C:\\Users\\Sneha Pandey\\PaperNova\\PaperNova\\backend\\utils\\auth.js:5:14)\n    at register (C:\\Users\\Sneha Pandey\\PaperNova\\PaperNova\\backend\\controllers\\userController.js:30:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","timestamp":"2026-02-03 12:19:08"}
+{"level":"http","message":"POST /api/users/register 500 64 - 347.258 ms","service":"papernova-backend","timestamp":"2026-02-03 12:19:08"}
+{"level":"info","message":"Server running in development mode on port 5000","service":"papernova-backend","timestamp":"2026-02-03 12:28:28"}
+{"level":"http","message":"GET /health 200 120 - 5.664 ms","service":"papernova-backend","timestamp":"2026-02-03 12:28:47"}
+{"level":"info","message":"Server running in development mode on port 5000","service":"papernova-backend","timestamp":"2026-02-03 12:29:34"}
+{"level":"http","message":"POST /api/users/register 400 49 - 86.514 ms","service":"papernova-backend","timestamp":"2026-02-03 12:32:32"}
+{"level":"info","message":"User logged in: sneha@gmail.com","service":"papernova-backend","timestamp":"2026-02-03 12:33:41"}
+{"level":"http","message":"POST /api/users/login 200 295 - 262.571 ms","service":"papernova-backend","timestamp":"2026-02-03 12:33:41"}
+{"level":"http","message":"GET /api/chat/sessions 200 36 - 100.474 ms","service":"papernova-backend","timestamp":"2026-02-03 12:33:41"}
+{"level":"http","message":"GET /api/papers?page=1&limit=5 200 62 - 164.266 ms","service":"papernova-backend","timestamp":"2026-02-03 12:33:41"}
+{"level":"http","message":"GET /api/chat/sessions 304 - - 99.878 ms","service":"papernova-backend","timestamp":"2026-02-03 12:33:42"}
+{"level":"http","message":"GET /api/papers?page=1&limit=5 304 - - 146.725 ms","service":"papernova-backend","timestamp":"2026-02-03 12:33:42"}
+{"level":"http","message":"GET /api/papers?page=1&limit=20 200 62 - 155.799 ms","service":"papernova-backend","timestamp":"2026-02-03 12:34:04"}
+{"level":"http","message":"GET /api/papers?page=1&limit=20 304 - - 147.429 ms","service":"papernova-backend","timestamp":"2026-02-03 12:34:04"}
+{"level":"http","message":"GET /api/chat/sessions 304 - - 101.085 ms","service":"papernova-backend","timestamp":"2026-02-03 12:34:06"}
+{"level":"http","message":"GET /api/chat/sessions 304 - - 97.039 ms","service":"papernova-backend","timestamp":"2026-02-03 12:34:06"}
+{"level":"http","message":"GET /api/chat/sessions 304 - - 99.110 ms","service":"papernova-backend","timestamp":"2026-02-03 12:34:10"}
+{"level":"http","message":"GET /api/papers?page=1&limit=5 304 - - 142.288 ms","service":"papernova-backend","timestamp":"2026-02-03 12:34:10"}
+{"level":"http","message":"GET /api/chat/sessions 304 - - 98.897 ms","service":"papernova-backend","timestamp":"2026-02-03 12:34:10"}
+{"level":"http","message":"GET /api/papers?page=1&limit=5 304 - - 142.515 ms","service":"papernova-backend","timestamp":"2026-02-03 12:34:11"}
